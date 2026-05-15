@@ -1,10 +1,12 @@
+# Code complet — Compteur de Branlette (Version Gamer Néon)
+
 ```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Progress Quest X</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compteur de Branlette</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -14,32 +16,20 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
+font-family:Arial, sans-serif;
 }
 
 body{
-background:#050816;
+background:
+radial-gradient(circle at top left,#00f7ff22,transparent 25%),
+radial-gradient(circle at bottom right,#ff00c822,transparent 25%),
+#050816;
+min-height:100vh;
 color:white;
 overflow-x:hidden;
-min-height:100vh;
 }
-
-/* BACKGROUND */
 
 body::before{
-content:"";
-position:fixed;
-width:100%;
-height:100%;
-background:
-radial-gradient(circle at top left,#00f7ff22,transparent 30%),
-radial-gradient(circle at bottom right,#8b5cf622,transparent 30%),
-linear-gradient(135deg,#050816,#0b1023,#050816);
-background-size:cover;
-z-index:-2;
-}
-
-body::after{
 content:"";
 position:fixed;
 width:100%;
@@ -53,130 +43,179 @@ z-index:-1;
 
 /* LOGIN */
 
-#loginScreen{
+#authScreen{
 position:fixed;
 inset:0;
-background:rgba(0,0,0,0.92);
+background:rgba(0,0,0,0.95);
 display:flex;
 align-items:center;
 justify-content:center;
-z-index:1000;
+z-index:999;
 backdrop-filter:blur(10px);
 }
 
-.login-box{
-width:350px;
+.auth-box{
+width:360px;
 padding:40px;
-border-radius:25px;
 background:rgba(255,255,255,0.05);
 border:1px solid rgba(255,255,255,0.1);
+border-radius:30px;
 backdrop-filter:blur(15px);
-box-shadow:0 0 40px #00f7ff33;
+box-shadow:0 0 40px #00f7ff44;
 text-align:center;
-animation:glow 4s infinite alternate;
 }
 
-@keyframes glow{
+.logo{
+font-size:34px;
+font-weight:900;
+margin-bottom:15px;
+background:linear-gradient(90deg,#00f7ff,#8b5cf6,#ff00c8);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+text-shadow:
+0 0 10px #00f7ff,
+0 0 20px #00f7ff,
+0 0 40px #8b5cf6;
+animation:neon 3s infinite alternate;
+}
+
+@keyframes neon{
 from{
-box-shadow:0 0 20px #00f7ff44;
+filter:brightness(1);
 }
 
 to{
-box-shadow:0 0 40px #8b5cf666;
+filter:brightness(1.5);
 }
 }
 
-.login-box h1{
-margin-bottom:10px;
-font-size:32px;
-background:linear-gradient(to right,#00f7ff,#8b5cf6);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.login-box p{
-margin-bottom:25px;
+.auth-box p{
 opacity:0.7;
+margin-bottom:25px;
 }
 
-.login-box input{
+input{
 width:100%;
 padding:15px;
 margin-bottom:15px;
 border:none;
-border-radius:12px;
+border-radius:15px;
 background:#111827;
 color:white;
 outline:none;
 }
 
+button{
+background:#0f172a;
+border:1px solid #00f7ff66;
+color:#00f7ff;
+padding:15px 20px;
+border-radius:15px;
+cursor:pointer;
+font-weight:bold;
+transition:0.3s;
+box-shadow:0 0 15px #00f7ff22;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 25px #00f7ff;
+}
+
+.auth-buttons{
+display:flex;
+gap:10px;
+}
+
+.auth-buttons button{
+flex:1;
+}
+
 /* APP */
 
 #app{
-padding-bottom:100px;
+display:none;
+padding:20px;
+padding-bottom:120px;
 }
 
 header{
-padding:30px 20px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-}
-
-.logo{
-font-size:28px;
-font-weight:bold;
-background:linear-gradient(to right,#00f7ff,#8b5cf6);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+margin-bottom:30px;
 }
 
 .level-box{
 background:rgba(255,255,255,0.05);
-padding:10px 20px;
+padding:10px 18px;
 border-radius:15px;
 border:1px solid rgba(255,255,255,0.08);
 }
 
-.container{
-width:95%;
-max-width:1200px;
-margin:auto;
+.page{
+display:none;
+animation:fade 0.4s;
+}
+
+.page.active{
+display:block;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(10px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
 }
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
 gap:20px;
 }
 
-.card{
+.card,
+.counter-card,
+.history-item{
 background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.1);
+backdrop-filter:blur(15px);
 padding:25px;
 border-radius:25px;
-backdrop-filter:blur(12px);
-box-shadow:0 0 20px rgba(0,247,255,0.08);
-transition:0.3s;
+box-shadow:0 0 25px rgba(0,247,255,0.12);
 }
 
-.card:hover{
-transform:translateY(-5px);
-box-shadow:0 0 30px rgba(0,247,255,0.2);
-}
-
-.card h2{
+.card h2,
+.counter-card h2{
 margin-bottom:20px;
-font-size:22px;
 }
 
-.stat{
-margin-bottom:15px;
+.counter-card{
+text-align:center;
+margin-bottom:20px;
+}
+
+.counter-card h1{
+font-size:75px;
+margin:20px 0;
+color:#00f7ff;
+text-shadow:0 0 20px #00f7ff;
+}
+
+.stats{
+margin-top:20px;
+line-height:2;
 }
 
 .progress{
 width:100%;
-height:16px;
+height:18px;
 background:#111827;
 border-radius:20px;
 overflow:hidden;
@@ -186,55 +225,10 @@ margin-top:10px;
 .bar{
 height:100%;
 width:0%;
-background:linear-gradient(to right,#00f7ff,#8b5cf6);
+background:linear-gradient(to right,#00f7ff,#8b5cf6,#ff00c8);
 box-shadow:0 0 15px #00f7ff;
 transition:0.4s;
 }
-
-.actions{
-display:flex;
-flex-wrap:wrap;
-gap:15px;
-}
-
-button{
-padding:14px 18px;
-border:none;
-border-radius:14px;
-background:#0f172a;
-color:#00f7ff;
-cursor:pointer;
-font-weight:bold;
-transition:0.3s;
-border:1px solid #00f7ff55;
-box-shadow:0 0 15px #00f7ff22;
-}
-
-button:hover{
-transform:scale(1.05);
-box-shadow:0 0 25px #00f7ff;
-}
-
-.shop-item,
-.inventory-item{
-background:#0f172a;
-padding:15px;
-border-radius:15px;
-margin-bottom:12px;
-border:1px solid rgba(255,255,255,0.08);
-}
-
-.inventory-list{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-}
-
-.inventory-item{
-margin:0;
-}
-
-/* NAV */
 
 .bottom-nav{
 position:fixed;
@@ -242,7 +236,7 @@ bottom:15px;
 left:50%;
 transform:translateX(-50%);
 width:95%;
-max-width:600px;
+max-width:700px;
 background:rgba(255,255,255,0.06);
 backdrop-filter:blur(15px);
 border:1px solid rgba(255,255,255,0.08);
@@ -250,7 +244,6 @@ border-radius:25px;
 padding:15px;
 display:flex;
 justify-content:space-around;
-z-index:999;
 box-shadow:0 0 25px rgba(0,247,255,0.15);
 }
 
@@ -259,6 +252,7 @@ text-align:center;
 font-size:13px;
 color:#9ca3af;
 transition:0.3s;
+cursor:pointer;
 }
 
 .nav-btn i{
@@ -291,51 +285,60 @@ transition:0.4s;
 opacity:1;
 }
 
+.history-item{
+margin-bottom:15px;
+line-height:1.8;
+}
+
 @media(max-width:700px){
 
-header{
-flex-direction:column;
-gap:15px;
+.logo{
+font-size:24px;
 }
 
-.actions{
-flex-direction:column;
+.counter-card h1{
+font-size:55px;
 }
 
-button{
-width:100%;
+.bottom-nav{
+padding:12px;
 }
 
 }
 
 </style>
 </head>
-
 <body>
 
-<div id="loginScreen">
+<!-- AUTH -->
 
-<div class="login-box">
+<div id="authScreen">
 
-<h1>PROGRESS QUEST X</h1>
-<p>Connecte-toi pour commencer</p>
+<div class="auth-box">
+
+<div class="logo">💦 COMPTEUR DE BRANLETTE</div>
+
+<p>Connexion / Inscription</p>
 
 <input type="text" id="username" placeholder="Pseudo">
 <input type="password" id="password" placeholder="Mot de passe">
 
-<button onclick="login()" style="width:100%;">
-Entrer dans le jeu
-</button>
-
+<div class="auth-buttons">
+<button onclick="register()">Inscription</button>
+<button onclick="login()">Connexion</button>
 </div>
 
 </div>
+
+</div>
+
+<!-- APP -->
 
 <div id="app">
 
 <header>
 
-<div class="logo">⚔️ PROGRESS QUEST X</div>
+<div class="logo">💦 COMPTEUR DE BRANLETTE</div>
 
 <div class="level-box">
 Niveau <span id="rank">1</span>
@@ -343,122 +346,127 @@ Niveau <span id="rank">1</span>
 
 </header>
 
-<div class="container">
+<!-- HOME -->
+
+<section id="homePage" class="page active">
 
 <div class="grid">
 
 <div class="card">
-
 <h2>👤 Profil</h2>
-
-<div class="stat">
 <p>Pseudo : <span id="playerName">Joueur</span></p>
-</div>
 
-<div class="stat">
+<div class="stats">
 <p>XP : <span id="xp">0</span></p>
+
 <div class="progress">
 <div class="bar" id="bar"></div>
 </div>
-</div>
-
-<div class="stat">
-<p>💰 Or : <span id="gold">0</span></p>
-</div>
-
-</div>
-
-<div class="card">
-
-<h2>⚡ Actions</h2>
-
-<div class="actions">
-<button onclick="action('mine')">⛏ Miner</button>
-<button onclick="action('hunt')">🏹 Chasser</button>
-<button onclick="action('explore')">🧭 Explorer</button>
-</div>
 
 <br>
 
-<p>⛏ Minage : <span id="mine">0</span></p>
-<p>🏹 Chasse : <span id="hunt">0</span></p>
-<p>🧭 Exploration : <span id="explore">0</span></p>
+<p>💰 Points : <span id="gold">0</span></p>
+</div>
 
 </div>
 
 <div class="card">
-
-<h2>🎯 Mission</h2>
-
-<p id="missionText"></p>
-
+<h2>🔥 Résumé</h2>
+<p>✊ Branlette totale : <span id="homeBranlette">0</span></p>
 <br>
-
-<button onclick="claimMission()">
-Réclamer la récompense
-</button>
+<p>💦 Éjaculations totales : <span id="homeEjaculer">0</span></p>
+</div>
 
 </div>
+
+</section>
+
+<!-- COUNTERS -->
+
+<section id="counterPage" class="page">
+
+<div class="counter-card">
+<h2>✊ Branlette</h2>
+<h1 id="branletteCount">0</h1>
+<button onclick="addBranlette()">+1 Branlette</button>
+</div>
+
+<div class="counter-card">
+<h2>💦 Éjaculer</h2>
+<h1 id="ejaculerCount">0</h1>
+<button onclick="addEjaculer()">+1 Éjaculation</button>
+</div>
+
+</section>
+
+<!-- CALENDAR -->
+
+<section id="calendarPage" class="page">
 
 <div class="card">
-
-<h2>🛒 Boutique</h2>
-
-<div class="shop-item">
-⚔️ Épée — 100 or
-<br><br>
-<button onclick="buy('Épée',100)">Acheter</button>
+<h2>📅 Historique</h2>
+<br>
+<div id="calendarList"></div>
 </div>
 
-<div class="shop-item">
-🛡 Armure — 200 or
-<br><br>
-<button onclick="buy('Armure',200)">Acheter</button>
-</div>
+</section>
 
-<div class="shop-item">
-🧪 Potion — 50 or
-<br><br>
-<button onclick="buy('Potion',50)">Acheter</button>
-</div>
+<!-- STATS -->
 
-</div>
+<section id="statsPage" class="page">
 
 <div class="card">
+<h2>📊 Statistiques</h2>
 
-<h2>🎒 Inventaire</h2>
-
-<div class="inventory-list" id="inventory"></div>
-
+<div class="stats">
+<p>✊ Total branlette : <span id="statsBranlette">0</span></p>
+<p>💦 Total éjaculations : <span id="statsEjaculer">0</span></p>
+<p>🏆 Niveau : <span id="statsLevel">1</span></p>
 </div>
 
 </div>
 
+</section>
+
+<!-- PROFILE -->
+
+<section id="profilePage" class="page">
+
+<div class="card">
+<h2>👤 Mon Profil</h2>
+<br>
+<p>Pseudo : <span id="profileName"></span></p>
+<br>
+<button onclick="logout()">Déconnexion</button>
 </div>
+
+</section>
+
+<!-- NAV -->
 
 <div class="bottom-nav">
 
-<div class="nav-btn active">
+<div class="nav-btn active" onclick="openPage('homePage',this)">
 <i class="fa-solid fa-house"></i>
 Accueil
 </div>
 
-<div class="nav-btn">
-<i class="fa-solid fa-bullseye"></i>
-Quêtes
+<div class="nav-btn" onclick="openPage('counterPage',this)">
+<i class="fa-solid fa-fire"></i>
+Compteurs
 </div>
 
-<div class="nav-btn">
-<i class="fa-solid fa-store"></i>
-Shop
+<div class="nav-btn" onclick="openPage('calendarPage',this)">
+<i class="fa-solid fa-calendar"></i>
+Calendrier
 </div>
 
-<div class="nav-btn">
-<i class="fa-solid fa-box"></i>
-Inventaire
+<div class="nav-btn" onclick="openPage('statsPage',this)">
+<i class="fa-solid fa-chart-simple"></i>
+Stats
 </div>
 
-<div class="nav-btn">
+<div class="nav-btn" onclick="openPage('profilePage',this)">
 <i class="fa-solid fa-user"></i>
 Profil
 </div>
@@ -471,204 +479,250 @@ Profil
 
 let player={
 name:"",
+password:"",
 rank:1,
 xp:0,
 gold:0,
-
-stats:{
-mine:0,
-hunt:0,
-explore:0
-},
-
-inventory:[],
-
-mission:{
-type:"mine",
-goal:10,
-reward:100
+branlette:0,
+ejaculer:0
 }
-}
+
+let historyData={}
 
 function save(){
-localStorage.setItem("progressQuestX",JSON.stringify(player))
+localStorage.setItem('compteurPlayer',JSON.stringify(player))
+localStorage.setItem('historyData',JSON.stringify(historyData))
 }
 
 function load(){
 
-let data=localStorage.getItem("progressQuestX")
+let data=localStorage.getItem('compteurPlayer')
+let history=localStorage.getItem('historyData')
 
 if(data){
 player=JSON.parse(data)
 }
 
-update()
+if(history){
+historyData=JSON.parse(history)
+}
+
+updateUI()
+renderCalendar()
+
+}
+
+function register(){
+
+let username=document.getElementById('username').value
+let password=document.getElementById('password').value
+
+if(username==='' || password===''){
+showNotif('Remplis tous les champs')
+return
+}
+
+player.name=username
+player.password=password
+
+save()
+
+showNotif('Compte créé !')
+
+setTimeout(()=>{
+startApp()
+},800)
 
 }
 
 function login(){
 
-let username=document.getElementById("username").value
-let password=document.getElementById("password").value
+let username=document.getElementById('username').value
+let password=document.getElementById('password').value
 
-if(username==="" || password===""){
-showNotif("Remplis tous les champs")
+let data=localStorage.getItem('compteurPlayer')
+
+if(!data){
+showNotif('Aucun compte trouvé')
 return
 }
 
-player.name=username
+let saved=JSON.parse(data)
 
-save()
+if(username===saved.name && password===saved.password){
 
-update()
+player=saved
 
-showNotif("Connexion réussie")
+showNotif('Connexion réussie')
 
 setTimeout(()=>{
-document.getElementById("loginScreen").style.display="none"
-},500)
+startApp()
+},800)
+
+}else{
+showNotif('Informations incorrectes')
+}
 
 }
 
-function update(){
+function startApp(){
 
-let xpNeeded=player.rank*100
-let percent=(player.xp/xpNeeded)*100
+document.getElementById('authScreen').style.display='none'
+document.getElementById('app').style.display='block'
+
+updateUI()
+renderCalendar()
+
+}
+
+function logout(){
+location.reload()
+}
+
+function openPage(id,el){
+
+let pages=document.querySelectorAll('.page')
+pages.forEach(p=>p.classList.remove('active'))
+
+document.getElementById(id).classList.add('active')
+
+let nav=document.querySelectorAll('.nav-btn')
+nav.forEach(n=>n.classList.remove('active'))
+
+el.classList.add('active')
+
+}
+
+function addXP(){
+
+player.xp+=10
+player.gold+=5
+
+let needed=player.rank*100
+
+if(player.xp>=needed){
+player.xp=0
+player.rank++
+showNotif('🎉 Niveau '+player.rank)
+}
+
+}
+
+function saveToday(type){
+
+let today=new Date().toLocaleDateString()
+
+if(!historyData[today]){
+historyData[today]={
+branlette:0,
+ejaculer:0
+}
+}
+
+historyData[today][type]++
+
+save()
+renderCalendar()
+
+}
+
+function addBranlette(){
+
+player.branlette++
+
+addXP()
+
+saveToday('branlette')
+
+updateUI()
+
+showNotif('+1 Branlette')
+
+}
+
+function addEjaculer(){
+
+player.ejaculer++
+
+addXP()
+
+saveToday('ejaculer')
+
+updateUI()
+
+showNotif('+1 Éjaculation')
+
+}
+
+function renderCalendar(){
+
+let div=document.getElementById('calendarList')
+
+if(!div) return
+
+div.innerHTML=''
+
+for(let day in historyData){
+
+let item=document.createElement('div')
+
+item.className='history-item'
+
+item.innerHTML=`
+<b>${day}</b><br>
+✊ Branlette : ${historyData[day].branlette}<br>
+💦 Éjaculations : ${historyData[day].ejaculer}
+`
+
+ div.appendChild(item)
+
+}
+
+}
+
+function updateUI(){
+
+let needed=player.rank*100
+let percent=(player.xp/needed)*100
 
 if(percent>100) percent=100
 
-document.getElementById("rank").innerText=player.rank
+let ids=[
+['playerName',player.name],
+['profileName',player.name],
+['xp',player.xp],
+['gold',player.gold],
+['rank',player.rank],
+['statsLevel',player.rank],
+['branletteCount',player.branlette],
+['ejaculerCount',player.ejaculer],
+['homeBranlette',player.branlette],
+['homeEjaculer',player.ejaculer],
+['statsBranlette',player.branlette],
+['statsEjaculer',player.ejaculer]
+]
 
-document.getElementById("xp").innerText=player.xp
-
-document.getElementById("gold").innerText=player.gold
-
-document.getElementById("playerName").innerText=player.name || "Joueur"
-
-document.getElementById("mine").innerText=player.stats.mine
-
-document.getElementById("hunt").innerText=player.stats.hunt
-
-document.getElementById("explore").innerText=player.stats.explore
-
-document.getElementById("bar").style.width=percent+"%"
-
-
-document.getElementById("missionText").innerText=
-"Faire "+player.mission.goal+" "+player.mission.type+
-" — récompense : "+player.mission.reward+" or"
-
-let inv=document.getElementById("inventory")
-inv.innerHTML=""
-
-player.inventory.forEach(item=>{
-
-let div=document.createElement("div")
-
-div.className="inventory-item"
-
-div.innerText=item
-
-inv.appendChild(div)
-
+ids.forEach(i=>{
+let el=document.getElementById(i[0])
+if(el) el.innerText=i[1]
 })
 
+let bar=document.getElementById('bar')
+if(bar) bar.style.width=percent+'%'
+
 save()
-
-}
-
-function action(type){
-
-player.stats[type]++
-player.xp+=15
-player.gold+=10
-
-showNotif("+15 XP • +10 Or")
-
-checkRank()
-update()
-
-}
-
-function checkRank(){
-
-let xpNeeded=player.rank*100
-
-if(player.xp>=xpNeeded){
-
-player.xp-=xpNeeded
-player.rank++
-
-showNotif("🎉 Niveau "+player.rank+" atteint !")
-
-}
-
-}
-
-function claimMission(){
-
-if(player.stats[player.mission.type]>=player.mission.goal){
-
-player.gold+=player.mission.reward
-
-showNotif("Mission réussie !")
-
-generateMission()
-
-}else{
-
-showNotif("Mission non terminée")
-
-}
-
-update()
-
-}
-
-function generateMission(){
-
-let types=["mine","hunt","explore"]
-
-let t=types[Math.floor(Math.random()*3)]
-
-player.mission={
-
-type:t,
-goal:10+Math.floor(Math.random()*20),
-reward:100+Math.floor(Math.random()*200)
-
-}
-
-}
-
-function buy(name,price){
-
-if(player.gold>=price){
-
-player.gold-=price
-player.inventory.push(name)
-
-showNotif(name+" acheté !")
-
-}else{
-
-showNotif("Pas assez d'or")
-
-}
-
-update()
 
 }
 
 function showNotif(text){
 
-let notif=document.getElementById("notif")
+let notif=document.getElementById('notif')
 
 notif.innerText=text
-notif.classList.add("show")
+notif.classList.add('show')
 
 setTimeout(()=>{
-notif.classList.remove("show")
+notif.classList.remove('show')
 },2500)
 
 }
@@ -680,3 +734,19 @@ load()
 </body>
 </html>
 ```
+
+Fonctionnalités incluses :
+
+* design gamer néon
+* glow RGB animé
+* connexion + inscription
+* navigation moderne en bas
+* pages séparées
+* compteur branlette
+* compteur éjaculation
+* calendrier historique
+* statistiques
+* système XP / niveau
+* sauvegarde automatique
+* responsive mobile
+* animations fluides
