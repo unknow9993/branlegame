@@ -1,10 +1,59 @@
 let player={
+name:'Joueur',
+points:0,
+actions:0,
+rebirths:0,
+battlePass:1,
+friends:[],
+inventory:[]
+}
+
+function save(){
+localStorage.setItem(
+'branletteParty',
+JSON.stringify(player)
+)
+}
+
+function load(){
+
+let data=localStorage.getItem(
+'branletteParty'
+)
+
+if(data){
+player=JSON.parse(data)
+}
+
+updateUI()
+renderBattlePass()
+renderFriends()
+
+}
+
+load()
+
+function openPage(id,el){
+
+// CACHE TOUTES LES PAGES
+
+const pages=document.querySelectorAll('.page')
+
+pages.forEach(page=>{
+page.style.display='none'
+page.classList.remove('active')
 })
 
-document.getElementById(id)
-.classList.add('active')
+// AFFICHE LA PAGE CHOISIE
 
-let nav=document.querySelectorAll('.nav-item')
+const selected=document.getElementById(id)
+
+selected.style.display='block'
+selected.classList.add('active')
+
+// NAVIGATION ACTIVE
+
+const nav=document.querySelectorAll('.nav-item')
 
 nav.forEach(btn=>{
 btn.classList.remove('active')
@@ -17,55 +66,4 @@ el.classList.add('active')
 function addAction(){
 
 player.actions++
-player.points+=5
-player.battlePass++
-
-if(player.battlePass>100){
-player.battlePass=100
-}
-
-updateUI()
-showNotif('+5 BranlettePoints')
-
-}
-
-function getRank(){
-
-if(player.actions>=100){
-return '👑 EL PATRON'
-}
-
-if(player.actions>=75){
-return '🔥 TIÉ CHEF'
-}
-
-if(player.actions>=50){
-return '⚡ T’AIMES LA BRANLETTE'
-}
-
-if(player.actions>=25){
-return '💀 CONFIRMÉ'
-}
-
-if(player.actions>=10){
-return '😎 AMATEUR'
-}
-
-return '🐣 DÉBUTANT'
-
-}
-
-function rebirthPlayer(){
-
-if(player.actions<50){
-showNotif('50 branlettes requises')
-return
-}
-
-player.rebirths++
-player.actions=0
-player.points+=250
-
-updateUI()
-
-showNotif('🔄 RE
+function rebirthP
