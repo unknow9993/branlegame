@@ -1,0 +1,682 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Progress Quest X</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#050816;
+color:white;
+overflow-x:hidden;
+min-height:100vh;
+}
+
+/* BACKGROUND */
+
+body::before{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at top left,#00f7ff22,transparent 30%),
+radial-gradient(circle at bottom right,#8b5cf622,transparent 30%),
+linear-gradient(135deg,#050816,#0b1023,#050816);
+background-size:cover;
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background-image:
+linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+background-size:40px 40px;
+z-index:-1;
+}
+
+/* LOGIN */
+
+#loginScreen{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.92);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:1000;
+backdrop-filter:blur(10px);
+}
+
+.login-box{
+width:350px;
+padding:40px;
+border-radius:25px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+backdrop-filter:blur(15px);
+box-shadow:0 0 40px #00f7ff33;
+text-align:center;
+animation:glow 4s infinite alternate;
+}
+
+@keyframes glow{
+from{
+box-shadow:0 0 20px #00f7ff44;
+}
+
+to{
+box-shadow:0 0 40px #8b5cf666;
+}
+}
+
+.login-box h1{
+margin-bottom:10px;
+font-size:32px;
+background:linear-gradient(to right,#00f7ff,#8b5cf6);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.login-box p{
+margin-bottom:25px;
+opacity:0.7;
+}
+
+.login-box input{
+width:100%;
+padding:15px;
+margin-bottom:15px;
+border:none;
+border-radius:12px;
+background:#111827;
+color:white;
+outline:none;
+}
+
+/* APP */
+
+#app{
+padding-bottom:100px;
+}
+
+header{
+padding:30px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+background:linear-gradient(to right,#00f7ff,#8b5cf6);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.level-box{
+background:rgba(255,255,255,0.05);
+padding:10px 20px;
+border-radius:15px;
+border:1px solid rgba(255,255,255,0.08);
+}
+
+.container{
+width:95%;
+max-width:1200px;
+margin:auto;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+}
+
+.card{
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.08);
+padding:25px;
+border-radius:25px;
+backdrop-filter:blur(12px);
+box-shadow:0 0 20px rgba(0,247,255,0.08);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 0 30px rgba(0,247,255,0.2);
+}
+
+.card h2{
+margin-bottom:20px;
+font-size:22px;
+}
+
+.stat{
+margin-bottom:15px;
+}
+
+.progress{
+width:100%;
+height:16px;
+background:#111827;
+border-radius:20px;
+overflow:hidden;
+margin-top:10px;
+}
+
+.bar{
+height:100%;
+width:0%;
+background:linear-gradient(to right,#00f7ff,#8b5cf6);
+box-shadow:0 0 15px #00f7ff;
+transition:0.4s;
+}
+
+.actions{
+display:flex;
+flex-wrap:wrap;
+gap:15px;
+}
+
+button{
+padding:14px 18px;
+border:none;
+border-radius:14px;
+background:#0f172a;
+color:#00f7ff;
+cursor:pointer;
+font-weight:bold;
+transition:0.3s;
+border:1px solid #00f7ff55;
+box-shadow:0 0 15px #00f7ff22;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 25px #00f7ff;
+}
+
+.shop-item,
+.inventory-item{
+background:#0f172a;
+padding:15px;
+border-radius:15px;
+margin-bottom:12px;
+border:1px solid rgba(255,255,255,0.08);
+}
+
+.inventory-list{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.inventory-item{
+margin:0;
+}
+
+/* NAV */
+
+.bottom-nav{
+position:fixed;
+bottom:15px;
+left:50%;
+transform:translateX(-50%);
+width:95%;
+max-width:600px;
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,0.08);
+border-radius:25px;
+padding:15px;
+display:flex;
+justify-content:space-around;
+z-index:999;
+box-shadow:0 0 25px rgba(0,247,255,0.15);
+}
+
+.nav-btn{
+text-align:center;
+font-size:13px;
+color:#9ca3af;
+transition:0.3s;
+}
+
+.nav-btn i{
+display:block;
+font-size:22px;
+margin-bottom:5px;
+}
+
+.nav-btn.active,
+.nav-btn:hover{
+color:#00f7ff;
+text-shadow:0 0 10px #00f7ff;
+}
+
+.notification{
+position:fixed;
+top:20px;
+right:20px;
+background:#00f7ff;
+color:black;
+padding:15px 20px;
+border-radius:15px;
+font-weight:bold;
+opacity:0;
+pointer-events:none;
+transition:0.4s;
+}
+
+.notification.show{
+opacity:1;
+}
+
+@media(max-width:700px){
+
+header{
+flex-direction:column;
+gap:15px;
+}
+
+.actions{
+flex-direction:column;
+}
+
+button{
+width:100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="loginScreen">
+
+<div class="login-box">
+
+<h1>PROGRESS QUEST X</h1>
+<p>Connecte-toi pour commencer</p>
+
+<input type="text" id="username" placeholder="Pseudo">
+<input type="password" id="password" placeholder="Mot de passe">
+
+<button onclick="login()" style="width:100%;">
+Entrer dans le jeu
+</button>
+
+</div>
+
+</div>
+
+<div id="app">
+
+<header>
+
+<div class="logo">⚔️ PROGRESS QUEST X</div>
+
+<div class="level-box">
+Niveau <span id="rank">1</span>
+</div>
+
+</header>
+
+<div class="container">
+
+<div class="grid">
+
+<div class="card">
+
+<h2>👤 Profil</h2>
+
+<div class="stat">
+<p>Pseudo : <span id="playerName">Joueur</span></p>
+</div>
+
+<div class="stat">
+<p>XP : <span id="xp">0</span></p>
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+</div>
+
+<div class="stat">
+<p>💰 Or : <span id="gold">0</span></p>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>⚡ Actions</h2>
+
+<div class="actions">
+<button onclick="action('mine')">⛏ Miner</button>
+<button onclick="action('hunt')">🏹 Chasser</button>
+<button onclick="action('explore')">🧭 Explorer</button>
+</div>
+
+<br>
+
+<p>⛏ Minage : <span id="mine">0</span></p>
+<p>🏹 Chasse : <span id="hunt">0</span></p>
+<p>🧭 Exploration : <span id="explore">0</span></p>
+
+</div>
+
+<div class="card">
+
+<h2>🎯 Mission</h2>
+
+<p id="missionText"></p>
+
+<br>
+
+<button onclick="claimMission()">
+Réclamer la récompense
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>🛒 Boutique</h2>
+
+<div class="shop-item">
+⚔️ Épée — 100 or
+<br><br>
+<button onclick="buy('Épée',100)">Acheter</button>
+</div>
+
+<div class="shop-item">
+🛡 Armure — 200 or
+<br><br>
+<button onclick="buy('Armure',200)">Acheter</button>
+</div>
+
+<div class="shop-item">
+🧪 Potion — 50 or
+<br><br>
+<button onclick="buy('Potion',50)">Acheter</button>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>🎒 Inventaire</h2>
+
+<div class="inventory-list" id="inventory"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="bottom-nav">
+
+<div class="nav-btn active">
+<i class="fa-solid fa-house"></i>
+Accueil
+</div>
+
+<div class="nav-btn">
+<i class="fa-solid fa-bullseye"></i>
+Quêtes
+</div>
+
+<div class="nav-btn">
+<i class="fa-solid fa-store"></i>
+Shop
+</div>
+
+<div class="nav-btn">
+<i class="fa-solid fa-box"></i>
+Inventaire
+</div>
+
+<div class="nav-btn">
+<i class="fa-solid fa-user"></i>
+Profil
+</div>
+
+</div>
+
+<div class="notification" id="notif"></div>
+
+<script>
+
+let player={
+name:"",
+rank:1,
+xp:0,
+gold:0,
+
+stats:{
+mine:0,
+hunt:0,
+explore:0
+},
+
+inventory:[],
+
+mission:{
+type:"mine",
+goal:10,
+reward:100
+}
+}
+
+function save(){
+localStorage.setItem("progressQuestX",JSON.stringify(player))
+}
+
+function load(){
+
+let data=localStorage.getItem("progressQuestX")
+
+if(data){
+player=JSON.parse(data)
+}
+
+update()
+
+}
+
+function login(){
+
+let username=document.getElementById("username").value
+let password=document.getElementById("password").value
+
+if(username==="" || password===""){
+showNotif("Remplis tous les champs")
+return
+}
+
+player.name=username
+
+save()
+
+update()
+
+showNotif("Connexion réussie")
+
+setTimeout(()=>{
+document.getElementById("loginScreen").style.display="none"
+},500)
+
+}
+
+function update(){
+
+let xpNeeded=player.rank*100
+let percent=(player.xp/xpNeeded)*100
+
+if(percent>100) percent=100
+
+document.getElementById("rank").innerText=player.rank
+
+document.getElementById("xp").innerText=player.xp
+
+document.getElementById("gold").innerText=player.gold
+
+document.getElementById("playerName").innerText=player.name || "Joueur"
+
+document.getElementById("mine").innerText=player.stats.mine
+
+document.getElementById("hunt").innerText=player.stats.hunt
+
+document.getElementById("explore").innerText=player.stats.explore
+
+document.getElementById("bar").style.width=percent+"%"
+
+
+document.getElementById("missionText").innerText=
+"Faire "+player.mission.goal+" "+player.mission.type+
+" — récompense : "+player.mission.reward+" or"
+
+let inv=document.getElementById("inventory")
+inv.innerHTML=""
+
+player.inventory.forEach(item=>{
+
+let div=document.createElement("div")
+
+div.className="inventory-item"
+
+div.innerText=item
+
+inv.appendChild(div)
+
+})
+
+save()
+
+}
+
+function action(type){
+
+player.stats[type]++
+player.xp+=15
+player.gold+=10
+
+showNotif("+15 XP • +10 Or")
+
+checkRank()
+update()
+
+}
+
+function checkRank(){
+
+let xpNeeded=player.rank*100
+
+if(player.xp>=xpNeeded){
+
+player.xp-=xpNeeded
+player.rank++
+
+showNotif("🎉 Niveau "+player.rank+" atteint !")
+
+}
+
+}
+
+function claimMission(){
+
+if(player.stats[player.mission.type]>=player.mission.goal){
+
+player.gold+=player.mission.reward
+
+showNotif("Mission réussie !")
+
+generateMission()
+
+}else{
+
+showNotif("Mission non terminée")
+
+}
+
+update()
+
+}
+
+function generateMission(){
+
+let types=["mine","hunt","explore"]
+
+let t=types[Math.floor(Math.random()*3)]
+
+player.mission={
+
+type:t,
+goal:10+Math.floor(Math.random()*20),
+reward:100+Math.floor(Math.random()*200)
+
+}
+
+}
+
+function buy(name,price){
+
+if(player.gold>=price){
+
+player.gold-=price
+player.inventory.push(name)
+
+showNotif(name+" acheté !")
+
+}else{
+
+showNotif("Pas assez d'or")
+
+}
+
+update()
+
+}
+
+function showNotif(text){
+
+let notif=document.getElementById("notif")
+
+notif.innerText=text
+notif.classList.add("show")
+
+setTimeout(()=>{
+notif.classList.remove("show")
+},2500)
+
+}
+
+load()
+
+</script>
+
+</body>
+</html>
+```
