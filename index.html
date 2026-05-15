@@ -1,809 +1,219 @@
-```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compteur Gamer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEON GAMER</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
 
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:
-radial-gradient(circle at top left,#00f7ff22,transparent 25%),
-radial-gradient(circle at bottom right,#ff00c822,transparent 25%),
-#050816;
-min-height:100vh;
-color:white;
-overflow-x:hidden;
-}
-
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background-image:
-linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-background-size:40px 40px;
-z-index:-1;
-}
-
-#authScreen{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.95);
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:999;
-backdrop-filter:blur(10px);
-}
-
-.auth-box{
-width:360px;
-padding:40px;
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.1);
-border-radius:30px;
-backdrop-filter:blur(15px);
-box-shadow:0 0 40px #00f7ff44;
-text-align:center;
-}
-
-.logo{
-font-size:32px;
-font-weight:900;
-margin-bottom:15px;
-background:linear-gradient(90deg,#00f7ff,#8b5cf6,#ff00c8);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.auth-box p{
-opacity:0.7;
-margin-bottom:20px;
-}
-
-input{
-width:100%;
-padding:15px;
-margin-bottom:15px;
-border:none;
-border-radius:15px;
-background:#111827;
-color:white;
-outline:none;
-}
-
-button{
-background:#0f172a;
-border:1px solid #00f7ff66;
-color:#00f7ff;
-padding:15px 20px;
-border-radius:15px;
-cursor:pointer;
-font-weight:bold;
-transition:0.3s;
-box-shadow:0 0 15px #00f7ff22;
-}
-
-button:hover{
-transform:scale(1.05);
-box-shadow:0 0 25px #00f7ff;
-}
-
-.auth-buttons{
-display:flex;
-gap:10px;
-}
-
-.auth-buttons button{
-flex:1;
-}
-
-#app{
-display:none;
-padding:20px;
-padding-bottom:120px;
-}
-
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:30px;
-}
-
-.level-box{
-background:rgba(255,255,255,0.05);
-padding:10px 18px;
-border-radius:15px;
-border:1px solid rgba(255,255,255,0.08);
-}
-
-.page{
-display:none;
-}
-
-.page.active{
-display:block;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:20px;
-}
-
-.card,
-.counter-card,
-.history-item{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.1);
-backdrop-filter:blur(15px);
-padding:25px;
-border-radius:25px;
-box-shadow:0 0 25px rgba(0,247,255,0.12);
-margin-bottom:20px;
-}
-
-.counter-card{
-text-align:center;
-}
-
-.counter-card h1{
-font-size:70px;
-margin:20px 0;
-color:#00f7ff;
-text-shadow:0 0 20px #00f7ff;
-}
-
-.stats{
-margin-top:20px;
-line-height:2;
-}
-
-.progress{
-width:100%;
-height:18px;
-background:#111827;
-border-radius:20px;
-overflow:hidden;
-margin-top:10px;
-}
-
-.bar{
-height:100%;
-width:0%;
-background:linear-gradient(to right,#00f7ff,#8b5cf6,#ff00c8);
-transition:0.4s;
-}
-
-.bottom-nav{
-position:fixed;
-bottom:15px;
-left:50%;
-transform:translateX(-50%);
-width:95%;
-max-width:1000px;
-background:rgba(255,255,255,0.06);
-backdrop-filter:blur(15px);
-border-radius:25px;
-padding:15px;
-display:flex;
-justify-content:space-around;
-flex-wrap:wrap;
-gap:10px;
-}
-
-.nav-btn{
-text-align:center;
-font-size:12px;
-color:#9ca3af;
-cursor:pointer;
-}
-
-.nav-btn i{
-display:block;
-font-size:22px;
-margin-bottom:5px;
-}
-
-.nav-btn.active,
-.nav-btn:hover{
-color:#00f7ff;
-}
-
-.notification{
-position:fixed;
-top:20px;
-right:20px;
-background:#00f7ff;
-color:black;
-padding:15px 20px;
-border-radius:15px;
-font-weight:bold;
-opacity:0;
-pointer-events:none;
-transition:0.4s;
-}
-
-.notification.show{
-opacity:1;
-}
-
-</style>
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-<div id="authScreen">
-
-<div class="auth-box">
-
-<div class="logo">💦 COMPTEUR GAMER</div>
-
-<p>Connexion / Inscription</p>
-
-<input type="text" id="username" placeholder="Pseudo">
-<input type="password" id="password" placeholder="Mot de passe">
-
-<div class="auth-buttons">
-<button onclick="register()">Inscription</button>
-<button onclick="login()">Connexion</button>
-</div>
-
-</div>
-
-</div>
-
-<div id="app">
+<div class="bg-glow"></div>
 
 <header>
-<div class="logo">💦 COMPTEUR GAMER</div>
-<div class="level-box">Niveau <span id="rank">1</span></div>
+
+  <div class="logo">
+    🔥 NEON GAMER
+  </div>
+
+  <div class="top-right">
+
+    <div class="rank-box">
+      🏆 <span id="rankName">Débutant</span>
+    </div>
+
+    <div class="coins-box">
+      🟠 <span id="coins">0</span>
+    </div>
+
+  </div>
+
 </header>
 
-<section id="homePage" class="page active">
+<main>
 
-<div class="grid">
+<section class="hero-card">
 
-<div class="card">
-<h2>👤 Profil</h2>
+  <h1 id="username">
+    Joueur
+  </h1>
 
-<div class="stats">
-<p>Pseudo : <span id="playerName"></span></p>
-<p>XP : <span id="xp"></span></p>
-<p>💰 BranlettePoints : <span id="coins"></span></p>
+  <p>
+    Progression ultime
+  </p>
 
-<div class="progress">
-<div class="bar" id="bar"></div>
-</div>
+  <div class="xp-bar">
 
-</div>
+    <div class="xp-fill" id="xpFill"></div>
 
-</div>
+  </div>
 
-<div class="card">
-<h2>🔥 Résumé</h2>
-<p>✊ Branlette totale : <span id="homeBranlette"></span></p>
-<br>
-<p>💦 Éjaculations totales : <span id="homeEjaculer"></span></p>
-</div>
+  <div class="stats-grid">
 
-</div>
+    <div class="stat">
+      <h2 id="actions">0</h2>
+      <span>Actions</span>
+    </div>
 
-</section>
+    <div class="stat">
+      <h2 id="rebirths">0</h2>
+      <span>Rebirths</span>
+    </div>
 
-<section id="counterPage" class="page">
+    <div class="stat">
+      <h2 id="battleLevel">1</h2>
+      <span>Battle Pass</span>
+    </div>
 
-<div class="counter-card">
-<h2>✊ Branlette</h2>
-<h1 id="branletteCount">0</h1>
-<button onclick="addBranlette()">+1 Branlette</button>
-</div>
-
-<div class="counter-card">
-<h2>💦 Éjaculation</h2>
-<h1 id="ejaculerCount">0</h1>
-<button onclick="addEjaculer()">+1 Éjaculation</button>
-</div>
+  </div>
 
 </section>
 
-<section id="shopPage" class="page">
-<div class="card">
-<h2>🛒 Boutique</h2>
+<section class="action-section">
 
-<div class="history-item">
-<h3>⚡ Boost XP</h3>
-<p>Double les gains XP</p>
-<br>
-<button onclick="buyItem('Boost XP',50)">Acheter - 50 points</button>
-</div>
+  <button class="big-btn" onclick="addAction()">
+    ⚡ Faire une action
+  </button>
 
-<div class="history-item">
-<h3>👑 VIP</h3>
-<p>Effet doré spécial</p>
-<br>
-<button onclick="buyItem('VIP',100)">Acheter - 100 points</button>
-</div>
+  <button class="rebirth-btn" onclick="rebirthPlayer()">
+    🔄 REBIRTH
+  </button>
 
-<div class="history-item">
-<h3>🔥 Aura Néon</h3>
-<p>Aura RGB spéciale</p>
-<br>
-<button onclick="buyItem('Aura',150)">Acheter - 150 points</button>
-</div>
-
-</div>
 </section>
 
-<section id="friendsPage" class="page">
-<div class="card">
-<h2>👥 Amis</h2>
+<section class="penis-section">
 
-<input type="text" id="friendInput" placeholder="Nom de l'ami">
-<button onclick="addFriend()">Ajouter</button>
+  <h2>
+    🔥 Évolution
+  </h2>
 
-<br><br>
+  <div class="evolution-container">
 
-<div id="friendsList"></div>
+    <div id="evolutionBar"></div>
 
-</div>
+  </div>
+
 </section>
 
-<section id="leaderboardPage" class="page">
-<div class="card">
-<h2>🏆 Classement</h2>
-<div id="leaderboardList"></div>
-</div>
+<section class="battlepass">
+
+  <h2>
+    🎟️ Battle Pass
+  </h2>
+
+  <div class="battle-grid" id="battleGrid"></div>
+
 </section>
 
-<section id="calendarPage" class="page">
-<div class="card">
-<h2>📅 Historique</h2>
-<br>
-<div id="calendarList"></div>
-</div>
+<section class="missions">
+
+  <h2>
+    🎯 Défis Quotidiens
+  </h2>
+
+  <div class="mission-card">
+    <p>Faire 10 actions</p>
+    <button onclick="claimMission(50)">
+      Récompense +50
+    </button>
+  </div>
+
+  <div class="mission-card">
+    <p>Faire un rebirth</p>
+    <button onclick="claimMission(150)">
+      Récompense +150
+    </button>
+  </div>
+
 </section>
 
-<section id="statsPage" class="page">
-<div class="card">
-<h2>📊 Statistiques</h2>
+<section class="shop">
 
-<div class="stats">
-<p>✊ Total branlette : <span id="statsBranlette"></span></p>
-<p>💦 Total éjaculations : <span id="statsEjaculer"></span></p>
-<p>🏆 Niveau : <span id="statsLevel"></span></p>
-</div>
+  <h2>
+    🛒 Boutique
+  </h2>
 
-</div>
+  <div class="shop-grid">
+
+    <div class="shop-card">
+      <h3>⚡ Boost XP</h3>
+      <p>Double XP</p>
+      <button onclick="buyItem('boost',100)">
+        Acheter
+      </button>
+    </div>
+
+    <div class="shop-card">
+      <h3>👑 VIP</h3>
+      <p>Aura Orange</p>
+      <button onclick="buyItem('vip',250)">
+        Acheter
+      </button>
+    </div>
+
+    <div class="shop-card">
+      <h3>🔥 Aura</h3>
+      <p>Glow spécial</p>
+      <button onclick="buyItem('aura',400)">
+        Acheter
+      </button>
+    </div>
+
+  </div>
+
 </section>
 
-<section id="profilePage" class="page">
-<div class="card">
-<h2>👤 Mon Profil</h2>
-<br>
-<p>Pseudo : <span id="profileName"></span></p>
-<br>
-<button onclick="logout()">Déconnexion</button>
-</div>
+<section class="friends">
+
+  <h2>
+    👥 Amis
+  </h2>
+
+  <div class="friend-add">
+
+    <input type="text" id="friendInput"
+    placeholder="Ajouter un ami">
+
+    <button onclick="addFriend()">
+      Ajouter
+    </button>
+
+  </div>
+
+  <div id="friendList"></div>
+
 </section>
 
-<div class="bottom-nav">
+<section class="leaderboard">
 
-<div class="nav-btn active" onclick="openPage('homePage',this)">
-<i class="fa-solid fa-house"></i>
-Accueil
-</div>
+  <h2>
+    🏆 Classement
+  </h2>
 
-<div class="nav-btn" onclick="openPage('counterPage',this)">
-<i class="fa-solid fa-fire"></i>
-Compteurs
-</div>
+  <div class="leader-card">
 
-<div class="nav-btn" onclick="openPage('shopPage',this)">
-<i class="fa-solid fa-shop"></i>
-Boutique
-</div>
+    <h3 id="leaderName">
+      Joueur
+    </h3>
 
-<div class="nav-btn" onclick="openPage('friendsPage',this)">
-<i class="fa-solid fa-user-group"></i>
-Amis
-</div>
+    <p>
+      Score :
+      <span id="leaderScore">0</span>
+    </p>
 
-<div class="nav-btn" onclick="openPage('leaderboardPage',this)">
-<i class="fa-solid fa-trophy"></i>
-Classement
-</div>
+  </div>
 
-<div class="nav-btn" onclick="openPage('calendarPage',this)">
-<i class="fa-solid fa-calendar"></i>
-Historique
-</div>
+</section>
 
-<div class="nav-btn" onclick="openPage('statsPage',this)">
-<i class="fa-solid fa-chart-simple"></i>
-Stats
-</div>
+</main>
 
-<div class="nav-btn" onclick="openPage('profilePage',this)">
-<i class="fa-solid fa-user"></i>
-Profil
-</div>
+<div class="notif" id="notif"></div>
 
-</div>
-
-<div class="notification" id="notif"></div>
-
-<script>
-
-let player={
-name:"",
-password:"",
-rank:1,
-xp:0,
-coins:0,
-branlette:0,
-ejaculer:0,
-inventory:[],
-friends:[]
-}
-
-let historyData={}
-
-function save(){
-localStorage.setItem('compteurPlayer',JSON.stringify(player))
-localStorage.setItem('historyData',JSON.stringify(historyData))
-}
-
-function load(){
-
-let data=localStorage.getItem('compteurPlayer')
-let history=localStorage.getItem('historyData')
-
-if(data){
-player=JSON.parse(data)
-}
-
-if(history){
-historyData=JSON.parse(history)
-}
-
-updateUI()
-renderCalendar()
-renderFriends()
-renderLeaderboard()
-
-}
-
-function register(){
-
-let username=document.getElementById('username').value
-let password=document.getElementById('password').value
-
-if(username==='' || password===''){
-showNotif('Remplis tous les champs')
-return
-}
-
-player.name=username
-player.password=password
-
-save()
-showNotif('Compte créé')
-
-setTimeout(()=>{
-startApp()
-},800)
-
-}
-
-function login(){
-
-let username=document.getElementById('username').value
-let password=document.getElementById('password').value
-
-let data=localStorage.getItem('compteurPlayer')
-
-if(!data){
-showNotif('Aucun compte trouvé')
-return
-}
-
-let saved=JSON.parse(data)
-
-if(username===saved.name && password===saved.password){
-
-player=saved
-showNotif('Connexion réussie')
-
-setTimeout(()=>{
-startApp()
-},800)
-
-}else{
-showNotif('Informations incorrectes')
-}
-
-}
-
-function startApp(){
-
-document.getElementById('authScreen').style.display='none'
-document.getElementById('app').style.display='block'
-
-updateUI()
-renderCalendar()
-renderFriends()
-renderLeaderboard()
-
-}
-
-function logout(){
-location.reload()
-}
-
-function openPage(id,el){
-
-let pages=document.querySelectorAll('.page')
-pages.forEach(p=>p.classList.remove('active'))
-
-document.getElementById(id).classList.add('active')
-
-let nav=document.querySelectorAll('.nav-btn')
-nav.forEach(n=>n.classList.remove('active'))
-
-el.classList.add('active')
-
-}
-
-function addXP(type){
-
-player.xp+=10
-
-if(type==='branlette'){
-player.coins+=5
-}
-
-if(type==='ejaculer'){
-player.coins+=5
-}
-
-if(player.inventory.includes('Boost XP')){
-player.xp+=10
-}
-
-let needed=player.rank*100
-
-if(player.xp>=needed){
-player.xp=0
-player.rank++
-showNotif('🎉 Niveau '+player.rank)
-}
-
-}
-
-function saveToday(type){
-
-let today=new Date().toLocaleDateString()
-
-if(!historyData[today]){
-historyData[today]={
-branlette:0,
-ejaculer:0
-}
-}
-
-historyData[today][type]++
-
-save()
-renderCalendar()
-
-}
-
-function addBranlette(){
-
-player.branlette++
-addXP('branlette')
-saveToday('branlette')
-updateUI()
-showNotif('+1 Branlette (+5 points)')
-
-}
-
-function addEjaculer(){
-
-player.ejaculer++
-addXP('ejaculer')
-saveToday('ejaculer')
-updateUI()
-showNotif('+1 Éjaculation (+5 points)')
-
-}
-
-function buyItem(name,price){
-
-if(player.coins<price){
-showNotif('Pas assez de points')
-return
-}
-
-if(player.inventory.includes(name)){
-showNotif('Déjà acheté')
-return
-}
-
-player.coins-=price
-player.inventory.push(name)
-
-if(name==='VIP'){
-document.body.style.boxShadow='0 0 100px gold inset'
-}
-
-if(name==='Aura'){
-document.body.style.filter='saturate(1.4)'
-}
-
-save()
-updateUI()
-
-showNotif(name+' acheté')
-
-}
-
-function addFriend(){
-
-let input=document.getElementById('friendInput')
-
-if(!input.value) return
-
-player.friends.push(input.value)
-
-save()
-renderFriends()
-
-input.value=''
-
-showNotif('Ami ajouté')
-
-}
-
-function renderFriends(){
-
-let div=document.getElementById('friendsList')
-
-if(!div) return
-
-if(player.friends.length===0){
-div.innerHTML='<p>Aucun ami</p>'
-return
-}
-
-div.innerHTML=''
-
-player.friends.forEach(friend=>{
-
-let item=document.createElement('div')
-item.className='history-item'
-item.innerHTML='👤 '+friend
-
-div.appendChild(item)
-
-})
-
-}
-
-function renderLeaderboard(){
-
-let div=document.getElementById('leaderboardList')
-
-if(!div) return
-
-let total=player.branlette+player.ejaculer
-
-div.innerHTML=`
-<div class="history-item">
-🥇 ${player.name}<br><br>
-🔥 Score : ${total}<br>
-🏆 Niveau : ${player.rank}<br>
-💰 Points : ${player.coins}
-</div>
-`
-
-}
-
-function renderCalendar(){
-
-let div=document.getElementById('calendarList')
-
-if(!div) return
-
-if(Object.keys(historyData).length===0){
-div.innerHTML='<p>Aucun historique</p>'
-return
-}
-
-div.innerHTML=''
-
-for(let day in historyData){
-
-let item=document.createElement('div')
-item.className='history-item'
-
-item.innerHTML=`
-<b>${day}</b><br><br>
-✊ Branlette : ${historyData[day].branlette}<br>
-💦 Éjaculations : ${historyData[day].ejaculer}
-`
-
- div.appendChild(item)
-
-}
-
-}
-
-function updateUI(){
-
-let needed=player.rank*100
-let percent=(player.xp/needed)*100
-
-if(percent>100) percent=100
-
-let ids=[
-['playerName',player.name],
-['profileName',player.name],
-['xp',player.xp],
-['coins',player.coins],
-['rank',player.rank],
-['statsLevel',player.rank],
-['branletteCount',player.branlette],
-['ejaculerCount',player.ejaculer],
-['homeBranlette',player.branlette],
-['homeEjaculer',player.ejaculer],
-['statsBranlette',player.branlette],
-['statsEjaculer',player.ejaculer]
-]
-
-ids.forEach(i=>{
-let el=document.getElementById(i[0])
-if(el) el.innerText=i[1]
-})
-
-let bar=document.getElementById('bar')
-if(bar) bar.style.width=percent+'%'
-
-save()
-
-}
-
-function showNotif(text){
-
-let notif=document.getElementById('notif')
-
-notif.innerText=text
-notif.classList.add('show')
-
-setTimeout(()=>{
-notif.classList.remove('show')
-},2500)
-
-}
-
-load()
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
-```
