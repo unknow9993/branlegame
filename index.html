@@ -1,12 +1,10 @@
-# Code complet — Compteur de Branlette (Version Gamer Néon)
-
 ```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compteur de Branlette</title>
+<title>Compteur Gamer</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -16,7 +14,7 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, sans-serif;
+font-family:Arial,sans-serif;
 }
 
 body{
@@ -32,16 +30,13 @@ overflow-x:hidden;
 body::before{
 content:"";
 position:fixed;
-width:100%;
-height:100%;
+inset:0;
 background-image:
 linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
 linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
 background-size:40px 40px;
 z-index:-1;
 }
-
-/* LOGIN */
 
 #authScreen{
 position:fixed;
@@ -66,32 +61,17 @@ text-align:center;
 }
 
 .logo{
-font-size:34px;
+font-size:32px;
 font-weight:900;
 margin-bottom:15px;
 background:linear-gradient(90deg,#00f7ff,#8b5cf6,#ff00c8);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-text-shadow:
-0 0 10px #00f7ff,
-0 0 20px #00f7ff,
-0 0 40px #8b5cf6;
-animation:neon 3s infinite alternate;
-}
-
-@keyframes neon{
-from{
-filter:brightness(1);
-}
-
-to{
-filter:brightness(1.5);
-}
 }
 
 .auth-box p{
 opacity:0.7;
-margin-bottom:25px;
+margin-bottom:20px;
 }
 
 input{
@@ -131,8 +111,6 @@ gap:10px;
 flex:1;
 }
 
-/* APP */
-
 #app{
 display:none;
 padding:20px;
@@ -155,23 +133,10 @@ border:1px solid rgba(255,255,255,0.08);
 
 .page{
 display:none;
-animation:fade 0.4s;
 }
 
 .page.active{
 display:block;
-}
-
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(10px);
-}
-
-to{
-opacity:1;
-transform:translateY(0);
-}
 }
 
 .grid{
@@ -189,20 +154,15 @@ backdrop-filter:blur(15px);
 padding:25px;
 border-radius:25px;
 box-shadow:0 0 25px rgba(0,247,255,0.12);
-}
-
-.card h2,
-.counter-card h2{
 margin-bottom:20px;
 }
 
 .counter-card{
 text-align:center;
-margin-bottom:20px;
 }
 
 .counter-card h1{
-font-size:75px;
+font-size:70px;
 margin:20px 0;
 color:#00f7ff;
 text-shadow:0 0 20px #00f7ff;
@@ -226,7 +186,6 @@ margin-top:10px;
 height:100%;
 width:0%;
 background:linear-gradient(to right,#00f7ff,#8b5cf6,#ff00c8);
-box-shadow:0 0 15px #00f7ff;
 transition:0.4s;
 }
 
@@ -236,22 +195,21 @@ bottom:15px;
 left:50%;
 transform:translateX(-50%);
 width:95%;
-max-width:700px;
+max-width:1000px;
 background:rgba(255,255,255,0.06);
 backdrop-filter:blur(15px);
-border:1px solid rgba(255,255,255,0.08);
 border-radius:25px;
 padding:15px;
 display:flex;
 justify-content:space-around;
-box-shadow:0 0 25px rgba(0,247,255,0.15);
+flex-wrap:wrap;
+gap:10px;
 }
 
 .nav-btn{
 text-align:center;
-font-size:13px;
+font-size:12px;
 color:#9ca3af;
-transition:0.3s;
 cursor:pointer;
 }
 
@@ -264,7 +222,6 @@ margin-bottom:5px;
 .nav-btn.active,
 .nav-btn:hover{
 color:#00f7ff;
-text-shadow:0 0 10px #00f7ff;
 }
 
 .notification{
@@ -285,38 +242,15 @@ transition:0.4s;
 opacity:1;
 }
 
-.history-item{
-margin-bottom:15px;
-line-height:1.8;
-}
-
-@media(max-width:700px){
-
-.logo{
-font-size:24px;
-}
-
-.counter-card h1{
-font-size:55px;
-}
-
-.bottom-nav{
-padding:12px;
-}
-
-}
-
 </style>
 </head>
 <body>
-
-<!-- AUTH -->
 
 <div id="authScreen">
 
 <div class="auth-box">
 
-<div class="logo">💦 COMPTEUR DE BRANLETTE</div>
+<div class="logo">💦 COMPTEUR GAMER</div>
 
 <p>Connexion / Inscription</p>
 
@@ -332,21 +266,12 @@ padding:12px;
 
 </div>
 
-<!-- APP -->
-
 <div id="app">
 
 <header>
-
-<div class="logo">💦 COMPTEUR DE BRANLETTE</div>
-
-<div class="level-box">
-Niveau <span id="rank">1</span>
-</div>
-
+<div class="logo">💦 COMPTEUR GAMER</div>
+<div class="level-box">Niveau <span id="rank">1</span></div>
 </header>
-
-<!-- HOME -->
 
 <section id="homePage" class="page active">
 
@@ -354,34 +279,30 @@ Niveau <span id="rank">1</span>
 
 <div class="card">
 <h2>👤 Profil</h2>
-<p>Pseudo : <span id="playerName">Joueur</span></p>
 
 <div class="stats">
-<p>XP : <span id="xp">0</span></p>
+<p>Pseudo : <span id="playerName"></span></p>
+<p>XP : <span id="xp"></span></p>
+<p>💰 BranlettePoints : <span id="coins"></span></p>
 
 <div class="progress">
 <div class="bar" id="bar"></div>
 </div>
 
-<br>
-
-<p>💰 Points : <span id="gold">0</span></p>
 </div>
 
 </div>
 
 <div class="card">
 <h2>🔥 Résumé</h2>
-<p>✊ Branlette totale : <span id="homeBranlette">0</span></p>
+<p>✊ Branlette totale : <span id="homeBranlette"></span></p>
 <br>
-<p>💦 Éjaculations totales : <span id="homeEjaculer">0</span></p>
+<p>💦 Éjaculations totales : <span id="homeEjaculer"></span></p>
 </div>
 
 </div>
 
 </section>
-
-<!-- COUNTERS -->
 
 <section id="counterPage" class="page">
 
@@ -392,46 +313,84 @@ Niveau <span id="rank">1</span>
 </div>
 
 <div class="counter-card">
-<h2>💦 Éjaculer</h2>
+<h2>💦 Éjaculation</h2>
 <h1 id="ejaculerCount">0</h1>
 <button onclick="addEjaculer()">+1 Éjaculation</button>
 </div>
 
 </section>
 
-<!-- CALENDAR -->
+<section id="shopPage" class="page">
+<div class="card">
+<h2>🛒 Boutique</h2>
+
+<div class="history-item">
+<h3>⚡ Boost XP</h3>
+<p>Double les gains XP</p>
+<br>
+<button onclick="buyItem('Boost XP',50)">Acheter - 50 points</button>
+</div>
+
+<div class="history-item">
+<h3>👑 VIP</h3>
+<p>Effet doré spécial</p>
+<br>
+<button onclick="buyItem('VIP',100)">Acheter - 100 points</button>
+</div>
+
+<div class="history-item">
+<h3>🔥 Aura Néon</h3>
+<p>Aura RGB spéciale</p>
+<br>
+<button onclick="buyItem('Aura',150)">Acheter - 150 points</button>
+</div>
+
+</div>
+</section>
+
+<section id="friendsPage" class="page">
+<div class="card">
+<h2>👥 Amis</h2>
+
+<input type="text" id="friendInput" placeholder="Nom de l'ami">
+<button onclick="addFriend()">Ajouter</button>
+
+<br><br>
+
+<div id="friendsList"></div>
+
+</div>
+</section>
+
+<section id="leaderboardPage" class="page">
+<div class="card">
+<h2>🏆 Classement</h2>
+<div id="leaderboardList"></div>
+</div>
+</section>
 
 <section id="calendarPage" class="page">
-
 <div class="card">
 <h2>📅 Historique</h2>
 <br>
 <div id="calendarList"></div>
 </div>
-
 </section>
 
-<!-- STATS -->
-
 <section id="statsPage" class="page">
-
 <div class="card">
 <h2>📊 Statistiques</h2>
 
 <div class="stats">
-<p>✊ Total branlette : <span id="statsBranlette">0</span></p>
-<p>💦 Total éjaculations : <span id="statsEjaculer">0</span></p>
-<p>🏆 Niveau : <span id="statsLevel">1</span></p>
+<p>✊ Total branlette : <span id="statsBranlette"></span></p>
+<p>💦 Total éjaculations : <span id="statsEjaculer"></span></p>
+<p>🏆 Niveau : <span id="statsLevel"></span></p>
 </div>
 
 </div>
-
 </section>
 
-<!-- PROFILE -->
-
 <section id="profilePage" class="page">
-
 <div class="card">
 <h2>👤 Mon Profil</h2>
 <br>
@@ -439,10 +398,7 @@ Niveau <span id="rank">1</span>
 <br>
 <button onclick="logout()">Déconnexion</button>
 </div>
-
 </section>
-
-<!-- NAV -->
 
 <div class="bottom-nav">
 
@@ -456,9 +412,24 @@ Accueil
 Compteurs
 </div>
 
+<div class="nav-btn" onclick="openPage('shopPage',this)">
+<i class="fa-solid fa-shop"></i>
+Boutique
+</div>
+
+<div class="nav-btn" onclick="openPage('friendsPage',this)">
+<i class="fa-solid fa-user-group"></i>
+Amis
+</div>
+
+<div class="nav-btn" onclick="openPage('leaderboardPage',this)">
+<i class="fa-solid fa-trophy"></i>
+Classement
+</div>
+
 <div class="nav-btn" onclick="openPage('calendarPage',this)">
 <i class="fa-solid fa-calendar"></i>
-Calendrier
+Historique
 </div>
 
 <div class="nav-btn" onclick="openPage('statsPage',this)">
@@ -482,9 +453,11 @@ name:"",
 password:"",
 rank:1,
 xp:0,
-gold:0,
+coins:0,
 branlette:0,
-ejaculer:0
+ejaculer:0,
+inventory:[],
+friends:[]
 }
 
 let historyData={}
@@ -509,6 +482,8 @@ historyData=JSON.parse(history)
 
 updateUI()
 renderCalendar()
+renderFriends()
+renderLeaderboard()
 
 }
 
@@ -526,8 +501,7 @@ player.name=username
 player.password=password
 
 save()
-
-showNotif('Compte créé !')
+showNotif('Compte créé')
 
 setTimeout(()=>{
 startApp()
@@ -552,7 +526,6 @@ let saved=JSON.parse(data)
 if(username===saved.name && password===saved.password){
 
 player=saved
-
 showNotif('Connexion réussie')
 
 setTimeout(()=>{
@@ -572,6 +545,8 @@ document.getElementById('app').style.display='block'
 
 updateUI()
 renderCalendar()
+renderFriends()
+renderLeaderboard()
 
 }
 
@@ -593,10 +568,21 @@ el.classList.add('active')
 
 }
 
-function addXP(){
+function addXP(type){
 
 player.xp+=10
-player.gold+=5
+
+if(type==='branlette'){
+player.coins+=5
+}
+
+if(type==='ejaculer'){
+player.coins+=5
+}
+
+if(player.inventory.includes('Boost XP')){
+player.xp+=10
+}
 
 let needed=player.rank*100
 
@@ -629,28 +615,111 @@ renderCalendar()
 function addBranlette(){
 
 player.branlette++
-
-addXP()
-
+addXP('branlette')
 saveToday('branlette')
-
 updateUI()
-
-showNotif('+1 Branlette')
+showNotif('+1 Branlette (+5 points)')
 
 }
 
 function addEjaculer(){
 
 player.ejaculer++
-
-addXP()
-
+addXP('ejaculer')
 saveToday('ejaculer')
+updateUI()
+showNotif('+1 Éjaculation (+5 points)')
 
+}
+
+function buyItem(name,price){
+
+if(player.coins<price){
+showNotif('Pas assez de points')
+return
+}
+
+if(player.inventory.includes(name)){
+showNotif('Déjà acheté')
+return
+}
+
+player.coins-=price
+player.inventory.push(name)
+
+if(name==='VIP'){
+document.body.style.boxShadow='0 0 100px gold inset'
+}
+
+if(name==='Aura'){
+document.body.style.filter='saturate(1.4)'
+}
+
+save()
 updateUI()
 
-showNotif('+1 Éjaculation')
+showNotif(name+' acheté')
+
+}
+
+function addFriend(){
+
+let input=document.getElementById('friendInput')
+
+if(!input.value) return
+
+player.friends.push(input.value)
+
+save()
+renderFriends()
+
+input.value=''
+
+showNotif('Ami ajouté')
+
+}
+
+function renderFriends(){
+
+let div=document.getElementById('friendsList')
+
+if(!div) return
+
+if(player.friends.length===0){
+div.innerHTML='<p>Aucun ami</p>'
+return
+}
+
+div.innerHTML=''
+
+player.friends.forEach(friend=>{
+
+let item=document.createElement('div')
+item.className='history-item'
+item.innerHTML='👤 '+friend
+
+div.appendChild(item)
+
+})
+
+}
+
+function renderLeaderboard(){
+
+let div=document.getElementById('leaderboardList')
+
+if(!div) return
+
+let total=player.branlette+player.ejaculer
+
+div.innerHTML=`
+<div class="history-item">
+🥇 ${player.name}<br><br>
+🔥 Score : ${total}<br>
+🏆 Niveau : ${player.rank}<br>
+💰 Points : ${player.coins}
+</div>
+`
 
 }
 
@@ -660,16 +729,20 @@ let div=document.getElementById('calendarList')
 
 if(!div) return
 
+if(Object.keys(historyData).length===0){
+div.innerHTML='<p>Aucun historique</p>'
+return
+}
+
 div.innerHTML=''
 
 for(let day in historyData){
 
 let item=document.createElement('div')
-
 item.className='history-item'
 
 item.innerHTML=`
-<b>${day}</b><br>
+<b>${day}</b><br><br>
 ✊ Branlette : ${historyData[day].branlette}<br>
 💦 Éjaculations : ${historyData[day].ejaculer}
 `
@@ -691,7 +764,7 @@ let ids=[
 ['playerName',player.name],
 ['profileName',player.name],
 ['xp',player.xp],
-['gold',player.gold],
+['coins',player.coins],
 ['rank',player.rank],
 ['statsLevel',player.rank],
 ['branletteCount',player.branlette],
@@ -734,19 +807,3 @@ load()
 </body>
 </html>
 ```
-
-Fonctionnalités incluses :
-
-* design gamer néon
-* glow RGB animé
-* connexion + inscription
-* navigation moderne en bas
-* pages séparées
-* compteur branlette
-* compteur éjaculation
-* calendrier historique
-* statistiques
-* système XP / niveau
-* sauvegarde automatique
-* responsive mobile
-* animations fluides
