@@ -1,6 +1,6 @@
 let player={
 name:"Joueur",
-coins:0,
+points:0,
 actions:0,
 rebirths:0,
 battlePass:1,
@@ -9,18 +9,24 @@ inventory:[]
 }
 
 function save(){
+
 localStorage.setItem(
-'neonPlayer',
+'branletteParty',
 JSON.stringify(player)
 )
+
 }
 
 function load(){
 
-let data=localStorage.getItem('neonPlayer')
+let data=localStorage.getItem(
+'branletteParty'
+)
 
 if(data){
+
 player=JSON.parse(data)
+
 }
 
 updateUI()
@@ -29,22 +35,57 @@ renderFriends()
 
 }
 
+load()
+
+// PAGES
+
+function openPage(id,el){
+
+let pages=document.querySelectorAll('.page')
+
+pages.forEach(page=>{
+
+page.classList.remove('active')
+
+})
+
+document.getElementById(id)
+.classList.add('active')
+
+let nav=document.querySelectorAll('.nav-btn')
+
+nav.forEach(btn=>{
+
+btn.classList.remove('active')
+
+})
+
+el.classList.add('active')
+
+}
+
+// ACTION
+
 function addAction(){
 
 player.actions++
-player.coins+=5
+player.points+=5
 
 player.battlePass++
 
 if(player.battlePass>100){
+
 player.battlePass=100
+
 }
 
 updateUI()
 
-showNotif('+5 points')
+showNotif('+5 BranlettePoints')
 
 }
+
+// RANK
 
 function getRank(){
 
@@ -57,7 +98,7 @@ return '🔥 TIÉ CHEF'
 }
 
 if(player.actions>=50){
-return '⚡ T’AIMES ÇA'
+return '⚡ T’AIMES LA BRANLETTE'
 }
 
 if(player.actions>=25){
@@ -72,24 +113,30 @@ return '🐣 DÉBUTANT'
 
 }
 
+// REBIRTH
+
 function rebirthPlayer(){
 
 if(player.actions<50){
 
-showNotif('50 actions requises')
+showNotif('50 branlettes requises')
 return
 
 }
 
 player.rebirths++
+
 player.actions=0
-player.coins+=250
+
+player.points+=250
 
 updateUI()
 
 showNotif('🔄 REBIRTH')
 
 }
+
+// UPDATE UI
 
 function updateUI(){
 
@@ -99,7 +146,7 @@ document.getElementById(
 
 document.getElementById(
 'coins'
-).innerText=player.coins
+).innerText=player.points
 
 document.getElementById(
 'rebirths'
@@ -118,6 +165,10 @@ document.getElementById(
 ).innerText=player.actions
 
 document.getElementById(
+'leaderTitle'
+).innerText=player.name
+
+document.getElementById(
 'leaderName'
 ).innerText=player.name
 
@@ -131,7 +182,7 @@ document.getElementById(
 'xpFill'
 ).style.width=percent+'%'
 
-let size=120+(player.rebirths*40)
+let size=120+(player.rebirths*45)
 
 document.getElementById(
 'evolutionBar'
@@ -140,6 +191,8 @@ document.getElementById(
 save()
 
 }
+
+// BATTLE PASS
 
 function renderBattlePass(){
 
@@ -155,11 +208,41 @@ let div=document.createElement('div')
 
 div.className='battle-level'
 
-if(i<=player.battlePass){
-div.classList.add('active')
+let reward=''
+
+if(i%10===0){
+
+reward='🔥 +100'
+
+}else if(i%5===0){
+
+reward='🟠 +50'
+
+}else{
+
+reward='⚡ +10'
+
 }
 
-div.innerText=i
+div.innerHTML=`
+<div>
+<b>${i}</b>
+<br>
+${reward}
+</div>
+`
+
+if(i<=player.battlePass){
+
+div.classList.add('active')
+
+}
+
+div.onclick=()=>{
+
+claimBattleReward(i)
+
+}
 
 grid.appendChild(div)
 
@@ -167,19 +250,58 @@ grid.appendChild(div)
 
 }
 
-function claimMission(amount){
+// CLAIM PASS
 
-player.coins+=amount
+function claimBattleReward(level){
 
-updateUI()
+if(level>player.battlePass){
 
-showNotif('+'+amount+' points')
+showNotif('Niveau verrouillé')
+return
 
 }
 
+let reward=10
+
+if(level%10===0){
+
+reward=100
+
+}else if(level%5===0){
+
+reward=50
+
+}
+
+player.points+=reward
+
+updateUI()
+
+showNotif(
+'Récompense +'+reward
+)
+
+}
+
+// MISSIONS
+
+function claimMission(amount){
+
+player.points+=amount
+
+updateUI()
+
+showNotif(
+'Mission terminée +'+amount
+)
+
+}
+
+// SHOP
+
 function buyItem(name,price){
 
-if(player.coins<price){
+if(player.points<price){
 
 showNotif('Pas assez de points')
 return
@@ -193,14 +315,14 @@ return
 
 }
 
-player.coins-=price
+player.points-=price
 
 player.inventory.push(name)
 
 if(name==='vip'){
 
 document.body.style.boxShadow=
-'0 0 120px #ff9d00 inset'
+'0 0 120px orange inset'
 
 }
 
@@ -213,9 +335,11 @@ document.body.style.filter=
 
 updateUI()
 
-showNotif('Achat effectué')
+showNotif('Objet acheté')
 
 }
+
+// FRIENDS
 
 function addFriend(){
 
@@ -259,6 +383,8 @@ list.appendChild(div)
 
 }
 
+// NOTIF
+
 function showNotif(text){
 
 let notif=document.getElementById(
@@ -277,12 +403,18 @@ notif.classList.remove('show')
 
 }
 
-load()
+// RESET PASS MENSUEL
 
 setInterval(()=>{
 
 player.battlePass=1
+
 renderBattlePass()
+
 updateUI()
+
+showNotif(
+'🎟️ Nouveau Battle Pass'
+)
 
 },2629800000)
