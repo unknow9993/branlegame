@@ -668,16 +668,25 @@ load()
 
 function openPage(id,el){
 
-let pages=document.querySelectorAll('.page')
+// CACHE TOUTES LES PAGES
+
+const pages=document.querySelectorAll('.page')
 
 pages.forEach(page=>{
+page.style.display='none'
 page.classList.remove('active')
 })
 
-document.getElementById(id)
-.classList.add('active')
+// AFFICHE LA PAGE CHOISIE
 
-let nav=document.querySelectorAll('.nav-item')
+const selected=document.getElementById(id)
+
+selected.style.display='block'
+selected.classList.add('active')
+
+// NAVIGATION ACTIVE
+
+const nav=document.querySelectorAll('.nav-item')
 
 nav.forEach(btn=>{
 btn.classList.remove('active')
