@@ -1,215 +1,333 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEON GAMER</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="style.css">
+<title>Branlette Party</title>
 
-  <link rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
 
-<div class="bg-glow"></div>
+<div class="bg"></div>
 
 <header>
 
-  <div class="logo">
-    🔥 NEON GAMER
-  </div>
+<div class="logo">
+🔥 BRANLETTE PARTY
+</div>
 
-  <div class="top-right">
+<div class="top-box">
 
-    <div class="rank-box">
-      🏆 <span id="rankName">Débutant</span>
-    </div>
+<div class="info-box">
+🏆 <span id="rankName">Débutant</span>
+</div>
 
-    <div class="coins-box">
-      🟠 <span id="coins">0</span>
-    </div>
+<div class="info-box">
+🟠 <span id="coins">0</span>
+</div>
 
-  </div>
+</div>
 
 </header>
 
-<main>
+<!-- HOME -->
 
-<section class="hero-card">
+<section id="homePage" class="page active">
 
-  <h1 id="username">
-    Joueur
-  </h1>
+<div class="card hero">
 
-  <p>
-    Progression ultime
-  </p>
+<h1 id="leaderName">
+Joueur
+</h1>
 
-  <div class="xp-bar">
+<p>
+Le roi de la progression
+</p>
 
-    <div class="xp-fill" id="xpFill"></div>
+<div class="xp-bar">
+<div class="xp-fill" id="xpFill"></div>
+</div>
 
-  </div>
+<div class="stats-grid">
 
-  <div class="stats-grid">
+<div class="stat-box">
+<h2 id="actions">0</h2>
+<p>Branlettes</p>
+</div>
 
-    <div class="stat">
-      <h2 id="actions">0</h2>
-      <span>Actions</span>
-    </div>
+<div class="stat-box">
+<h2 id="rebirths">0</h2>
+<p>Rebirths</p>
+</div>
 
-    <div class="stat">
-      <h2 id="rebirths">0</h2>
-      <span>Rebirths</span>
-    </div>
+<div class="stat-box">
+<h2 id="battleLevel">1</h2>
+<p>Battle Pass</p>
+</div>
 
-    <div class="stat">
-      <h2 id="battleLevel">1</h2>
-      <span>Battle Pass</span>
-    </div>
+</div>
 
-  </div>
+</div>
 
-</section>
+<div class="card">
 
-<section class="action-section">
+<button class="main-btn"
+onclick="addAction()">
+⚡ +1 Branlette
+</button>
 
-  <button class="big-btn" onclick="addAction()">
-    ⚡ Faire une action
-  </button>
+<button class="rebirth-btn"
+onclick="rebirthPlayer()">
+🔄 REBIRTH
+</button>
 
-  <button class="rebirth-btn" onclick="rebirthPlayer()">
-    🔄 REBIRTH
-  </button>
+</div>
 
-</section>
+<div class="card">
 
-<section class="penis-section">
+<h2>
+🍆 ÉVOLUTION
+</h2>
 
-  <h2>
-    🔥 Évolution
-  </h2>
+<div class="evolution-zone">
 
-  <div class="evolution-container">
+<div id="evolutionBar"></div>
 
-    <div id="evolutionBar"></div>
+</div>
 
-  </div>
-
-</section>
-
-<section class="battlepass">
-
-  <h2>
-    🎟️ Battle Pass
-  </h2>
-
-  <div class="battle-grid" id="battleGrid"></div>
+</div>
 
 </section>
 
-<section class="missions">
+<!-- BATTLE PASS -->
 
-  <h2>
-    🎯 Défis Quotidiens
-  </h2>
+<section id="battlePage" class="page">
 
-  <div class="mission-card">
-    <p>Faire 10 actions</p>
-    <button onclick="claimMission(50)">
-      Récompense +50
-    </button>
-  </div>
+<div class="card">
 
-  <div class="mission-card">
-    <p>Faire un rebirth</p>
-    <button onclick="claimMission(150)">
-      Récompense +150
-    </button>
-  </div>
+<h2>
+🎟️ Battle Pass
+</h2>
+
+<div id="battleGrid"
+class="battle-grid"></div>
+
+</div>
 
 </section>
 
-<section class="shop">
+<!-- SHOP -->
 
-  <h2>
-    🛒 Boutique
-  </h2>
+<section id="shopPage" class="page">
 
-  <div class="shop-grid">
+<div class="card">
 
-    <div class="shop-card">
-      <h3>⚡ Boost XP</h3>
-      <p>Double XP</p>
-      <button onclick="buyItem('boost',100)">
-        Acheter
-      </button>
-    </div>
+<h2>
+🛒 Boutique
+</h2>
 
-    <div class="shop-card">
-      <h3>👑 VIP</h3>
-      <p>Aura Orange</p>
-      <button onclick="buyItem('vip',250)">
-        Acheter
-      </button>
-    </div>
+<div class="shop-grid">
 
-    <div class="shop-card">
-      <h3>🔥 Aura</h3>
-      <p>Glow spécial</p>
-      <button onclick="buyItem('aura',400)">
-        Acheter
-      </button>
-    </div>
+<div class="shop-card">
 
-  </div>
+<h3>⚡ Boost XP</h3>
 
-</section>
+<p>Double progression</p>
 
-<section class="friends">
+<button onclick="buyItem('boost',100)">
+Acheter
+</button>
 
-  <h2>
-    👥 Amis
-  </h2>
+</div>
 
-  <div class="friend-add">
+<div class="shop-card">
 
-    <input type="text" id="friendInput"
-    placeholder="Ajouter un ami">
+<h3>👑 VIP</h3>
 
-    <button onclick="addFriend()">
-      Ajouter
-    </button>
+<p>Aura orange</p>
 
-  </div>
+<button onclick="buyItem('vip',250)">
+Acheter
+</button>
 
-  <div id="friendList"></div>
+</div>
+
+<div class="shop-card">
+
+<h3>🔥 Aura</h3>
+
+<p>Glow spécial</p>
+
+<button onclick="buyItem('aura',400)">
+Acheter
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 </section>
 
-<section class="leaderboard">
+<!-- MISSIONS -->
 
-  <h2>
-    🏆 Classement
-  </h2>
+<section id="missionPage" class="page">
 
-  <div class="leader-card">
+<div class="card">
 
-    <h3 id="leaderName">
-      Joueur
-    </h3>
+<h2>
+🎯 Défis Quotidiens
+</h2>
 
-    <p>
-      Score :
-      <span id="leaderScore">0</span>
-    </p>
+<div class="mission-card">
 
-  </div>
+<p>
+Faire 10 branlettes
+</p>
+
+<button onclick="claimMission(50)">
++50 points
+</button>
+
+</div>
+
+<div class="mission-card">
+
+<p>
+Faire un rebirth
+</p>
+
+<button onclick="claimMission(150)">
++150 points
+</button>
+
+</div>
+
+</div>
 
 </section>
 
-</main>
+<!-- FRIENDS -->
+
+<section id="friendPage" class="page">
+
+<div class="card">
+
+<h2>
+👥 Amis
+</h2>
+
+<div class="friend-add">
+
+<input type="text"
+id="friendInput"
+placeholder="Nom de l'ami">
+
+<button onclick="addFriend()">
+Ajouter
+</button>
+
+</div>
+
+<div id="friendList"></div>
+
+</div>
+
+</section>
+
+<!-- LEADERBOARD -->
+
+<section id="leaderboardPage" class="page">
+
+<div class="card">
+
+<h2>
+🏆 Classement
+</h2>
+
+<div class="leader-card">
+
+<h3 id="leaderTitle">
+Joueur
+</h3>
+
+<p>
+Score :
+<span id="leaderScore">0</span>
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- NAVIGATION -->
+
+<nav class="bottom-nav">
+
+<div class="nav-btn active"
+onclick="openPage('homePage',this)">
+
+<i class="fa-solid fa-house"></i>
+
+Accueil
+
+</div>
+
+<div class="nav-btn"
+onclick="openPage('battlePage',this)">
+
+<i class="fa-solid fa-ticket"></i>
+
+Pass
+
+</div>
+
+<div class="nav-btn"
+onclick="openPage('shopPage',this)">
+
+<i class="fa-solid fa-shop"></i>
+
+Shop
+
+</div>
+
+<div class="nav-btn"
+onclick="openPage('missionPage',this)">
+
+<i class="fa-solid fa-bullseye"></i>
+
+Défis
+
+</div>
+
+<div class="nav-btn"
+onclick="openPage('friendPage',this)">
+
+<i class="fa-solid fa-user-group"></i>
+
+Amis
+
+</div>
+
+<div class="nav-btn"
+onclick="openPage('leaderboardPage',this)">
+
+<i class="fa-solid fa-trophy"></i>
+
+Classement
+
+</div>
+
+</nav>
 
 <div class="notif" id="notif"></div>
 
